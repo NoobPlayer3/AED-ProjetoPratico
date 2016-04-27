@@ -1,13 +1,24 @@
 #include <iostream>
 
 class Conteiner{
-int nome;
+private:
+    int nome;
+
+public:
+    void setNome(int pNome){
+        this->nome = pNome;
+    }
+
+    int getNome(){
+        return this->nome;
+    }
 };
 
 class No{
 public:
     Conteiner item;
-    No *prox;
+    No *proxNo;
+    No(){}
 
 };
 
@@ -16,33 +27,41 @@ class Pilha{
 
 public:
     No *topo,*fundo;
-    Pilha *prox;
+    Pilha *proxPilha;
 
     Pilha(){
-        fundo = new No();
-        fundo->prox= NULL;
-        topo = fundo;
-        prox = NULL;
+        this->fundo = new No();
+        this->fundo->proxNo = NULL;
+        this->topo = this->fundo;
+        this->proxPilha = NULL;
     }
 
-    void empilhar(Pilha P, Conteiner x){
+    void empilhar(Pilha P, Conteiner pItem){
         No *aux;
         aux = new No();
-        P.topo->item = x;
-        aux->prox = P.topo;
+        P.topo->item = pItem;
+        aux->proxNo = P.topo;
         P.topo = aux;
     }
 
-    void desempilhar(Pilha P, Conteiner x){
+    void desempilhar(Pilha P, Conteiner pItem){
         No *aux;
         aux = P.topo;
-        P.topo = P.topo->prox;
-        x = P.topo->item;
+        P.topo = P.topo->proxNo;
+        pItem = P.topo->item;
         delete(aux);
     }
-    
-    void busca(Pilha P, Conteiner x){
-        
+
+    bool busca(Pilha P, Conteiner pItem){
+        No *p = P.topo->proxNo;
+        while ((p != NULL) && (p->item.getNome() != pItem.getNome())){
+            p = p->proxNo;
+        }
+        if (p == NULL){
+            return true;
+        } else {
+            return false;
+        }
     }
 };
 
@@ -55,18 +74,52 @@ Pilha *prim,*ult;
         L.ult = L.prim;
     }
     void insere(Lista L, Pilha P){
-        L.ult->prox = new Pilha(P);
-        L.ult = L.ult->prox;
-        L.ult->prox = NULL;
+        L.ult->proxPilha = new Pilha(P);
+        L.ult = L.ult->proxPilha;
+        L.ult->proxPilha = NULL;
     }
+
+};
+
+
+class Fila{
+
+No *frente, *tras;
+
+    Fila(){
+        this->frente = new No();
+        this->tras = this->frente;
+        this->frente->proxNo = NULL;
+    }
+
+    void enfileira(Fila F, Conteiner Pitem){
+        F.tras->proxNo = new No();
+        F.tras = F.tras->proxNo;
+        F.tras->item = Pitem;
+        F.tras->proxNo = NULL;
+    }
+
+    void desenfilera(Fila F, Conteiner pItem){
+        No *aux = F.frente;
+        F.frente = F.frente->proxNo;
+        pItem = F.frente->item;
+        delete(aux);
+    }
+
 
 };
 
 
 using namespace std;
 
-int main()
-{
+int main(){
+
+
+
 
 
 }
+
+
+
+
